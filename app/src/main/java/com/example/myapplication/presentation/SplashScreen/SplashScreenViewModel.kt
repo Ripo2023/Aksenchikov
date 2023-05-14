@@ -3,6 +3,7 @@ package com.example.myapplication.presentation.SplashScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.myapplication.domain.AuthManager
 import com.example.myapplication.domain.OnboardScreenManager
 import com.example.myapplication.presentation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,8 @@ import javax.inject.Inject
 //ViewModel Splash экрана
 @HiltViewModel
 class SplashScreenViewModel @Inject constructor(
-    private val onboardScreenManager: OnboardScreenManager
+    private val onboardScreenManager: OnboardScreenManager,
+    private val authManager: AuthManager
 ) : ViewModel() {
 
 
@@ -33,7 +35,10 @@ class SplashScreenViewModel @Inject constructor(
                         popUpTo(Screen.SplashScreen.route) { inclusive = true }
                     }
                 } else {
-                    navController.navigate(Screen.AuthScreen.route) {
+                    val nextScreen = if(authManager.currentUser != null) Screen.MainScreen.route
+                        else Screen.AuthScreen.route
+
+                        navController.navigate(nextScreen) {
                         launchSingleTop = true
 
                         popUpTo(Screen.SplashScreen.route) { inclusive = true }

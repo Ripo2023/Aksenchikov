@@ -30,7 +30,7 @@ class OnboardScreenViewModel @Inject constructor(
                 navController.navigate(Screen.AuthScreen.route) {
                     launchSingleTop = true
 
-                    popUpTo(Screen.SplashScreen.route) { inclusive = true }
+                    popUpTo(Screen.OnboardScreen.route) { inclusive = true }
                 }
             }
         }

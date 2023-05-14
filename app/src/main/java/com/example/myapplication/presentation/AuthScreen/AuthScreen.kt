@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.AuthScreen
 
+import android.app.Activity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
@@ -58,7 +59,8 @@ import com.example.myapplication.themeColors
 @Composable
 fun AuthScreen(
     navController: NavController,
-    authScreenViewModel: AuthScreenViewModel = hiltViewModel()
+    authScreenViewModel: AuthScreenViewModel = hiltViewModel(),
+    activity:Activity
 ) {
     val state by authScreenViewModel.state.collectAsState()
 
@@ -98,8 +100,10 @@ fun AuthScreen(
                     targetState = state
                 ) { screenState ->
                     when(screenState) {
-                        AuthScreenState.EnterCodeState -> EnterCodeState()
-                        AuthScreenState.EnterPhoneState -> EnterPhoneState(authScreenViewModel)
+                        AuthScreenState.EnterCodeState -> EnterCodeState(
+                            authScreenViewModel, navController
+                        )
+                        AuthScreenState.EnterPhoneState -> EnterPhoneState(authScreenViewModel,activity)
                     }
                 }
 
@@ -112,7 +116,8 @@ fun AuthScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun EnterPhoneState(
-    authScreenViewModel:AuthScreenViewModel
+    authScreenViewModel:AuthScreenViewModel,
+    activity: Activity
 ) {
     var phoneText by rememberSaveable() {
         mutableStateOf("")
@@ -168,7 +173,7 @@ fun EnterPhoneState(
         }
 
         Button(
-            onClick = { authScreenViewModel.sendCode(phoneText) },
+            onClick = { authScreenViewModel.sendCode(phoneText,activity) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(80.dp)
@@ -191,7 +196,10 @@ fun EnterPhoneState(
 }
 
 @Composable
-fun EnterCodeState() {
+fun EnterCodeState(
+    authScreenViewModel: AuthScreenViewModel,
+    navController: NavController
+) {
     var code by rememberSaveable() {
         mutableStateOf("")
     }
@@ -220,7 +228,7 @@ fun EnterCodeState() {
         )
 
         Button(
-            onClick = {  },
+            onClick = { authScreenViewModel.confirmCode(navController,code) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(80.dp)
