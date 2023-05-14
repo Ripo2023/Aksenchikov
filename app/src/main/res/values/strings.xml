@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="Skip">Пропустить</string>
+    <string name="Hi">Привет!</string>
+    <string name="first">Переходи в этом приложении ты сможешь заказать кофе онлайн и выбрать магазин не далеко от себя. Давай начнём работу</string>
+    <string name="title_secord">Поиск магазина кофе</string>
+    <string name="second">Карта покажет магазины кофе. Ты сможешь выбрать ближайший.Так же приложение должно сказать сколько до него идти</string>
+    <string name="make_order">Сделай заказ</string>
+    <string name="theree">Выбери любимые напитки и десерты.Ты сможешь выбрать время, когда заказ будет готов и добавки к нему</string>
+    <string name="take_order">Получите заказ</string>
+    <string name="title">В назначеное время, вы придёте в магазин кофе и насладитесь своим заказом без очередей и ожиданий</string>
+    <string name="sing_in">Вход</string>
+    <string name="phone">Телефон</string>
+    <string name="I_aggree">"Я соглашаюсь с "</string>
+    <string name="pc">Политикой кофинденциальности</string>
+    <string name="and">" и "</string>
+    <string name="uc">Пользовательским соглашением</string>
+    <string name="Contine">Продолжить</string>
+    <string name="code">Код</string>
+    <string name="sing">Войти</string>
+</resources>

@@ -11,7 +11,7 @@ fun ComponentActivity.setContentWithTheme(
     content:@Composable () -> Unit
 ) {
     setContent {
-        val theme = if(isSystemInDarkTheme()) ThemeType.dark else ThemeType.white
+        val theme = ThemeType.white
         val colors = theme.colors
 
         val systemUiController = rememberSystemUiController()
