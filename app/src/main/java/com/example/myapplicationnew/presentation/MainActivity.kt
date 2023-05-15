@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 composable(Screen.AuthScreen.route) {
-                    AuthScreen(navController = navController, activity = this@MainActivity)
+                    AuthScreen(navController = navController)
                 }
 
                 composable(Screen.MainScreen.route) {

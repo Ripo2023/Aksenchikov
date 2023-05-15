@@ -59,8 +59,7 @@ import com.example.myapplicationnew.themeColors
 @Composable
 fun AuthScreen(
     navController: NavController,
-    authScreenViewModel: AuthScreenViewModel = hiltViewModel(),
-    activity:Activity
+    authScreenViewModel: AuthScreenViewModel = hiltViewModel()
 ) {
     val state by authScreenViewModel.state.collectAsState()
 
@@ -103,7 +102,7 @@ fun AuthScreen(
                         AuthScreenState.EnterCodeState -> EnterCodeState(
                             authScreenViewModel, navController
                         )
-                        AuthScreenState.EnterPhoneState -> EnterPhoneState(authScreenViewModel,activity)
+                        AuthScreenState.EnterPhoneState -> EnterPhoneState(authScreenViewModel)
                     }
                 }
 
@@ -117,7 +116,6 @@ fun AuthScreen(
 @Composable
 fun EnterPhoneState(
     authScreenViewModel:AuthScreenViewModel,
-    activity: Activity
 ) {
     var phoneText by rememberSaveable() {
         mutableStateOf("")
@@ -149,6 +147,7 @@ fun EnterPhoneState(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Phone
             ),
+            label = { Text(text = "Введите номер") }
         )
 
         FlowRow(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -173,7 +172,7 @@ fun EnterPhoneState(
         }
 
         Button(
-            onClick = { authScreenViewModel.sendCode(phoneText,activity) },
+            onClick = { authScreenViewModel.sendCode(phoneText) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(80.dp)
@@ -225,6 +224,7 @@ fun EnterCodeState(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
             ),
+            label = { Text(text = "Введите код") }
         )
 
         Button(
@@ -260,9 +260,11 @@ private fun TopBar(state: AuthScreenState,onBack:() -> Unit) {
             .padding(top = 10.dp), contentAlignment = Alignment.CenterStart) {
             Icon(painter = painterResource(id = R.drawable.back_arrow),
                 contentDescription = "",
-                modifier = Modifier.size(25.dp).clickable {
-                    onBack()
-                }
+                modifier = Modifier
+                    .size(25.dp)
+                    .clickable {
+                        onBack()
+                    }
             )
         }
     }

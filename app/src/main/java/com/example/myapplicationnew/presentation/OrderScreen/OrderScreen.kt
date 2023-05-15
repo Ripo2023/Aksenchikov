@@ -26,9 +26,13 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -59,7 +63,7 @@ import com.example.myapplicationnew.presentation.OrderScreen.models.OrderViewMod
 import com.example.myapplicationnew.presentation.OrderScreen.models.QrState
 import com.example.myapplicationnew.themeColors
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun OrderScreen(
     orderScreenViewModel: OrderScreenViewModel = hiltViewModel()
@@ -69,91 +73,105 @@ fun OrderScreen(
     val inProcess by orderScreenViewModel.inProcessOrders.collectAsState()
 
     val orderDialogState by orderScreenViewModel.orderDialogState.collectAsState()
-    
-    
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
+
+    val isRefresh = orderScreenViewModel.isRefresh.collectAsState()
+
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefresh.value,
+        onRefresh = { orderScreenViewModel.refresh() }
+    )
+
+    Box(
+        modifier = Modifier.fillMaxWidth().pullRefresh(pullRefreshState),
+        contentAlignment = Alignment.TopCenter
     ) {
-        item {
-            Text(
-                text = "Готовы",
-                fontSize = 25.sp,
-                color = Color.Black,
-                fontWeight = FontWeight.W900
-            )
-        }
 
-        items(ready) {
-
-            FlowRow(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(themeColors.primary)
-                    .clickable { orderScreenViewModel.showOrderDialog(it) },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AsyncImage(
-                    model = it.photoImage,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(end = 60.dp)
-                        .size(40.dp)
-                        .clip(CircleShape)
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().pullRefresh(pullRefreshState)
+        ) {
+            item {
+                Text(
+                    text = "Готовы",
+                    fontSize = 25.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.W900
                 )
-                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+            }
+
+            items(ready) {
+
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(themeColors.primary)
+                        .clickable { orderScreenViewModel.showOrderDialog(it) },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AsyncImage(
+                        model = it.photoImage,
+                        contentDescription = "",
+                        modifier = Modifier
+                            .padding(end = 60.dp)
+                            .size(40.dp)
+                            .clip(CircleShape)
+                    )
+                    Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+                        Text(
+                            text = it.id,
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.W800
+                        )
+                    }
+                }
+            }
+
+            item {
+                Text(
+                    text = "В процессе",
+                    fontSize = 25.sp,
+                    color = Color.Black,
+                    fontWeight = FontWeight.W900
+                )
+            }
+
+            items(inProcess) {
+                val color = themeColors.primary
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(Color.Black)
+                        .clickable { orderScreenViewModel.showOrderDialog(it) }
+                    ,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AsyncImage(
+                        model = it.photoImage,
+                        contentDescription = "",
+                        modifier = Modifier
+                            .padding(end = 60.dp)
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .drawBehind {
+                                drawCircle(color)
+                            }
+                    )
                     Text(
                         text = it.id,
                         color = Color.White,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.W800
+                        fontWeight = FontWeight.W800,
+                        textAlign = TextAlign.End
                     )
                 }
             }
         }
 
-        item {
-            Text(
-                text = "В процессе",
-                fontSize = 25.sp,
-                color = Color.Black,
-                fontWeight = FontWeight.W900
-            )
-        }
-
-        items(inProcess) {
-            val color = themeColors.primary
-            FlowRow(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color.Black)
-                    .clickable { orderScreenViewModel.showOrderDialog(it) }
-                ,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AsyncImage(
-                    model = it.photoImage,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(end = 60.dp)
-                        .size(40.dp)
-                        .clip(CircleShape)
-                        .drawBehind {
-                            drawCircle(color)
-                        }
-                )
-                Text(
-                    text = it.id,
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W800,
-                    textAlign = TextAlign.End
-                )
-            }
-        }
+        PullRefreshIndicator(refreshing = isRefresh.value, state = pullRefreshState)
     }
 
     if(orderDialogState is OrderItemsDialogState.Show) {
@@ -244,7 +262,10 @@ fun OrderItemsDialog(order:OrderViewModel,orderScreenViewModel: OrderScreenViewM
                             onClick = { orderScreenViewModel.showQr(order) },
                             shape = RoundedCornerShape(10.dp),
                             colors = ButtonDefaults.buttonColors(backgroundColor = themeColors.primary),
-                            modifier = Modifier.fillMaxWidth().padding(15.dp).height(75.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(15.dp)
+                                .height(75.dp)
                         ) {
                             Text(
                                 text = "QR code",

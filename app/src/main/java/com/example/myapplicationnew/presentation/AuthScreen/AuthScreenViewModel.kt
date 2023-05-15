@@ -34,7 +34,7 @@ class AuthScreenViewModel @Inject constructor(
 
     private val handler = Handler(Looper.getMainLooper())
 
-    fun sendCode(phone:String,activity: Activity) {
+    fun sendCode(phone:String) {
         viewModelScope.launch(Dispatchers.IO) {
             authManager.authRequest(
                 phone,
@@ -44,7 +44,6 @@ class AuthScreenViewModel @Inject constructor(
                 onError = {
                     handler.post { Toast.makeText(context,"Произошла ошибка",Toast.LENGTH_SHORT).show() }
                 },
-                activity = activity
             )
             handler.post {
                 Toast.makeText(context,"Код для тестового пользователя firebase 111111",Toast.LENGTH_SHORT).show()

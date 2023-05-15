@@ -27,7 +27,6 @@ class AuthManager @Inject constructor() {
 
     suspend fun authRequest(
         phone:String,
-        activity: Activity,
         onCodeSend:() -> Unit,
         onError:() -> Unit
     ) {
@@ -58,7 +57,6 @@ class AuthManager @Inject constructor() {
             .setPhoneNumber(phone)
             .setTimeout(120L, TimeUnit.SECONDS)
             .setCallbacks(callback)
-            .setActivity(activity)
             .build()
 
         PhoneAuthProvider.verifyPhoneNumber(options)

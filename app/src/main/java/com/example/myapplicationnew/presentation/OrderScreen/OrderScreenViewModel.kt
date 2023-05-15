@@ -32,6 +32,8 @@ class OrderScreenViewModel @Inject constructor(
 
     val orderDialogState = MutableStateFlow<OrderItemsDialogState>(OrderItemsDialogState.Hide)
 
+    val isRefresh = MutableStateFlow(false)
+
     //отображения диалога заказов
     fun showOrderDialog(order:OrderViewModel) {
         orderDialogState.update { OrderItemsDialogState.Show(order) }
@@ -64,13 +66,19 @@ class OrderScreenViewModel @Inject constructor(
         qrState.update { QrState.Hide }
     }
 
-    init {
+    fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
+            isRefresh.update { true }
             val ready = viewModelScope.async { orderRepository.getReadyOrders() }
             val isProcess = viewModelScope.async { orderRepository.getInProcessOrders() }
 
             readyOrders.update { ready.await() }
             inProcessOrders.update { isProcess.await() }
+            isRefresh.update { false }
         }
+    }
+
+    init {
+       refresh()
     }
 }

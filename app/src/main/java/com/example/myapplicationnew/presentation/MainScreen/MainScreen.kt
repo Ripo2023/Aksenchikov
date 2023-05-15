@@ -52,6 +52,8 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.W400
+import androidx.compose.ui.text.font.FontWeight.Companion.W500
 import androidx.compose.ui.text.font.FontWeight.Companion.W800
 import androidx.compose.ui.text.font.FontWeight.Companion.W900
 import androidx.compose.ui.unit.dp
@@ -60,8 +62,11 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
+import coil.disk.DiskCache
+import coil.request.ImageResult
 import com.example.myapplicationnew.R
 import com.example.myapplicationnew.presentation.MainScreen.models.CategoryLoadState
 import com.example.myapplicationnew.presentation.MainScreen.models.MakeOrderDialogState
@@ -228,8 +233,18 @@ fun MainScreen(
                                             }
                                         )
 
-                                        Text(text = it.name)
-                                        Text(text = "От ${it.price}")
+                                        Text(
+                                            text = it.name,
+                                            fontWeight = W900,
+                                            fontSize = 18.sp,
+                                            color = themeColors.primaryFontColor
+                                        )
+                                        Text(
+                                            text = "От ${it.price} р",
+                                            fontWeight = W400,
+                                            fontSize = 16.sp,
+                                            color = themeColors.primaryFontColor
+                                        )
 
                                         OutlinedButton(
                                             onClick = { mainScreenViewModel.showMakeOrderDialogState(it) },
@@ -237,7 +252,11 @@ fun MainScreen(
                                                 contentColor = themeColors.primary
                                             )
                                         ) {
-                                            Text(text = stringResource(R.string.Select))
+                                            Text(
+                                                text = stringResource(R.string.Select),
+                                                fontWeight = W500,
+                                                color = themeColors.primary
+                                            )
                                         }
                                     }
                                 }
@@ -332,7 +351,7 @@ fun MakeOrderDialog(
             Modifier
                 .fillMaxSize()
                 .padding(top = 10.dp),
-            backgroundColor = Color.Transparent,
+            backgroundColor = Color.White.copy(0.3f),
             topBar = {
                 Box(
                     Modifier
@@ -347,7 +366,7 @@ fun MakeOrderDialog(
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
                         Icon(painter = painterResource(id = R.drawable.back_arrow),
                             contentDescription = "",
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier.size(40.dp).clickable { mainScreenViewModel.hideMakeOrderDialogState() }
                         )
                     }
 
