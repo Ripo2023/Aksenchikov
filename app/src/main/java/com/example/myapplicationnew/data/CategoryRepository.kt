@@ -15,6 +15,7 @@ class CategoryRepository @Inject constructor() {
 
     suspend fun getCategory() : List<CategoryProduct> {
         val ref =  database.getReference("Category")
+
          return ref.get().asDeferred().await().children.map {
             CategoryProduct((it.key as String),it.value as String)
         }
