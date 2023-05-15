@@ -1,4 +1,4 @@
-package com.example.myapplicationnew.domain
+package com.example.myapplicationnew.data
 
 import com.example.myapplicationnew.presentation.MainScreen.models.ProductModel
 import com.example.myapplicationnew.presentation.MainScreen.models.SubModel
@@ -8,11 +8,12 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.asDeferred
 import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 
+
+//Репозиторий заказов
 class ProductRepository @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) {

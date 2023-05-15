@@ -24,14 +24,13 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 
-
+//Точка входа в приложение
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.initialize(this)
-        MapKitFactory.getInstance().onStart();
         setContentWithTheme(
         ) {
             val navController = rememberNavController()
@@ -68,5 +67,15 @@ class MainActivity : ComponentActivity() {
 
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        MapKitFactory.getInstance().onStart();
+    }
+
+    override fun onStop() {
+        super.onStop()
+        MapKitFactory.getInstance().onStop();
     }
 }

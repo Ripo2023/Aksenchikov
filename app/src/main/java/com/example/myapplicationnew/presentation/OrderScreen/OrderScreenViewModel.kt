@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplicationnew.domain.AuthManager
-import com.example.myapplicationnew.domain.OrderRepository
-import com.example.myapplicationnew.domain.ProductRepository
+import com.example.myapplicationnew.data.OrderRepository
+import com.example.myapplicationnew.data.ProductRepository
 import com.example.myapplicationnew.domain.QrGeneratorUseCase
 import com.example.myapplicationnew.presentation.OrderScreen.models.OrderItemsDialogState
 import com.example.myapplicationnew.presentation.OrderScreen.models.OrderViewModel

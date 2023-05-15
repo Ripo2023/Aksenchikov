@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
+//Класс для записи в shared prefs
 @Singleton
 class PreferencesStorage @Inject constructor(
     @ApplicationContext private val context: Context

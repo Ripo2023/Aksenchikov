@@ -1,12 +1,12 @@
-package com.example.myapplicationnew.domain
+package com.example.myapplicationnew.data
 
+import com.example.myapplicationnew.domain.AuthManager
 import com.example.myapplicationnew.models.OrderModel
 import com.example.myapplicationnew.presentation.OrderScreen.models.OrderViewModel
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.asDeferred
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -35,7 +35,8 @@ class OrderRepository @Inject constructor(
     ) {
         val ref = database.getReference("Orders/${authManager.currentUser!!.uid}")
 
-        ref.push().setValue(Json.encodeToString(RemoteOrderModel.serializer(),
+        ref.push().setValue(Json.encodeToString(
+            RemoteOrderModel.serializer(),
             RemoteOrderModel(orderModel.productId,orderModel.volumeCof,orderModel.isReady)
         ))
     }

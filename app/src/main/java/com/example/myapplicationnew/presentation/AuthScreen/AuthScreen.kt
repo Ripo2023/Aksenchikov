@@ -28,8 +28,11 @@ import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -63,6 +66,12 @@ fun AuthScreen(
 ) {
     val state by authScreenViewModel.state.collectAsState()
 
+    val scaffoldState = rememberScaffoldState()
+
+    LaunchedEffect(key1 = Unit, block = {
+        scaffoldState.snackbarHostState.showSnackbar("Телефоны для тестового пользователя firebase +375336441254...+375336441256")
+    })
+
     Scaffold(
         Modifier
             .fillMaxSize()
@@ -71,7 +80,8 @@ fun AuthScreen(
                 end = 15.dp
             ),
         backgroundColor = themeColors.background,
-        topBar = { TopBar(state) { authScreenViewModel.backToPhoneEnter() } }
+        topBar = { TopBar(state) { authScreenViewModel.backToPhoneEnter() } },
+        scaffoldState = scaffoldState
     ) {
         LazyColumn(
             Modifier
@@ -100,7 +110,7 @@ fun AuthScreen(
                 ) { screenState ->
                     when(screenState) {
                         AuthScreenState.EnterCodeState -> EnterCodeState(
-                            authScreenViewModel, navController
+                            authScreenViewModel, navController,scaffoldState
                         )
                         AuthScreenState.EnterPhoneState -> EnterPhoneState(authScreenViewModel)
                     }
@@ -197,11 +207,16 @@ fun EnterPhoneState(
 @Composable
 fun EnterCodeState(
     authScreenViewModel: AuthScreenViewModel,
-    navController: NavController
+    navController: NavController,
+    scaffoldState:ScaffoldState
 ) {
     var code by rememberSaveable() {
         mutableStateOf("")
     }
+
+    LaunchedEffect(key1 = Unit, block = {
+        scaffoldState.snackbarHostState.showSnackbar("Код для тестового пользователя firebase 111111")
+    })
 
 
     Column(Modifier.fillMaxWidth()) {

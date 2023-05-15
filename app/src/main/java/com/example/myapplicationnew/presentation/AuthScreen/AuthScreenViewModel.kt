@@ -45,9 +45,6 @@ class AuthScreenViewModel @Inject constructor(
                     handler.post { Toast.makeText(context,"Произошла ошибка",Toast.LENGTH_SHORT).show() }
                 },
             )
-            handler.post {
-                Toast.makeText(context,"Код для тестового пользователя firebase 111111",Toast.LENGTH_SHORT).show()
-            }
         }
     }
 
@@ -73,11 +70,5 @@ class AuthScreenViewModel @Inject constructor(
 
     fun backToPhoneEnter() {
         state.update { AuthScreenState.EnterPhoneState }
-    }
-
-    init {
-        handler.post {
-            Toast.makeText(context,"Телефоны для тестового пользователя firebase +375336441254...+375336441256",Toast.LENGTH_LONG).show()
-        }
     }
 }

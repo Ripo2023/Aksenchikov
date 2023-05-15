@@ -6,10 +6,10 @@ import android.widget.Toast
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplicationnew.domain.CategoryRepository
+import com.example.myapplicationnew.data.CategoryRepository
 import com.example.myapplicationnew.domain.LastOrderInfoManager
-import com.example.myapplicationnew.domain.OrderRepository
-import com.example.myapplicationnew.domain.ProductRepository
+import com.example.myapplicationnew.data.OrderRepository
+import com.example.myapplicationnew.data.ProductRepository
 import com.example.myapplicationnew.domain.models.LastOrderModel
 import com.example.myapplicationnew.italianNameByProductId
 import com.example.myapplicationnew.models.OrderModel

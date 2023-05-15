@@ -9,6 +9,7 @@ import com.google.zxing.MultiFormatWriter
 import java.util.EnumMap
 import javax.inject.Inject
 
+//ГЕНИРАТОР QR КОДОВ
 class QrGeneratorUseCase @Inject constructor() {
 
     fun generateQrCode(string: String) : Bitmap {

@@ -45,6 +45,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -75,6 +76,8 @@ import com.example.myapplicationnew.presentation.MainScreen.models.ProductModel
 import com.example.myapplicationnew.presentation.Screen
 import com.example.myapplicationnew.themeColors
 
+
+//Отрисовка главного экрана
 @OptIn(ExperimentalLayoutApi::class)
 @SuppressLint("ResourceType")
 @Composable
@@ -299,7 +302,7 @@ fun TopBar(navController: NavController) {
 
         Column {
             Text(
-                text = "Адрес магазина кофе",
+                text = stringResource(R.string.adrees_shop_coffee),
                 color = themeColors.secondaryFontColor,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.W200
@@ -352,6 +355,30 @@ fun MakeOrderDialog(
                 .fillMaxSize()
                 .padding(top = 10.dp),
             backgroundColor = Color.White.copy(0.3f),
+            bottomBar = {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .background(themeColors.background)
+                ) {
+                    Button(
+                        onClick = {
+                            mainScreenViewModel.makeOrder(product.id,currentSelectedVolume.first,product.name)
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = themeColors.primary),
+                        modifier = Modifier
+                            .fillMaxWidth().padding(10.dp).clickable {  },
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Text(
+                            text = "Добавить в корзину за ${product.price.toInt() * currentSelectedVolume.first}",
+                            color = themeColors.label,
+                            fontSize = 20.sp,
+                            fontWeight = W800
+                        )
+                    }
+                }
+            },
             topBar = {
                 Box(
                     Modifier
@@ -447,10 +474,11 @@ fun MakeOrderDialog(
                                 )
                                 Card(
                                     modifier = Modifier
+                                        .padding(10.dp)
                                         .width(100.dp)
                                         .height(50.dp)
-                                        .padding(end = 10.dp,)
-                                        .clickable { currentSelectedVolume = it },
+                                        .clickable { currentSelectedVolume = it }
+                                    ,
                                     shape = RoundedCornerShape(10.dp),
                                     backgroundColor = color.value
                                 ) {
@@ -475,7 +503,8 @@ fun MakeOrderDialog(
                         Text(
                             text = "Добавки",
                             fontSize = 24.sp,
-                            fontWeight = W900
+                            fontWeight = W900,
+                            modifier = Modifier.padding(10.dp)
                         )
 
                         LazyRow(Modifier.fillMaxWidth()) {
@@ -506,7 +535,9 @@ fun MakeOrderDialog(
                                     } else {
                                         Icon(painter = painterResource(id = R.drawable.baseline_add_24),
                                             contentDescription = "",
-                                            modifier = Modifier.size(100.dp)
+                                            modifier = Modifier.size(100.dp) .drawBehind {
+                                                drawRect(Color.Gray.copy(0.6f))
+                                            }
                                         )
                                     }
 
@@ -515,23 +546,6 @@ fun MakeOrderDialog(
                             }
                         }
 
-                        Button(
-                            onClick = {
-                                mainScreenViewModel.makeOrder(product.id,currentSelectedVolume.first,product.name)
-                            },
-                            colors = ButtonDefaults.buttonColors(backgroundColor = themeColors.primary),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 40.dp),
-                            shape = RoundedCornerShape(20.dp)
-                        ) {
-                            Text(
-                                text = "Добавить в корзину за ${product.price.toInt() * currentSelectedVolume.first}",
-                                color = themeColors.label,
-                                fontSize = 20.sp,
-                                fontWeight = W800
-                            )
-                        }
 
 
                     }

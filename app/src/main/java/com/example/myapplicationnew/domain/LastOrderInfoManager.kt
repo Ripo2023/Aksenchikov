@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
+//Управляющий информацией о последнем заказе для widgetа
 class LastOrderInfoManager @Inject constructor(
     private val preferencesStorage: PreferencesStorage,
    @ApplicationContext private val context:Context
