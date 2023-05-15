@@ -126,5 +126,9 @@ dependencies {
     //WorkManager
     implementation "androidx.work:work-runtime-ktx:2.8.1"
 
+    //Yandex map
+    implementation 'com.yandex.android:maps.mobile:4.3.1-lite'
+
+
 
 }

@@ -290,7 +290,7 @@ fun TopBar(navController: NavController) {
                 AsyncImage(
                     model = R.drawable.location,
                     contentDescription = "",
-                    Modifier.size(20.dp)
+                    Modifier.size(20.dp).clickable { navController.navigate(Screen.MapScreen.route) { launchSingleTop = true } }
                 )
                 
                 Text(

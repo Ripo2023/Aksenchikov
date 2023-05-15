@@ -11,27 +11,27 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplicationnew.presentation.AuthScreen.AuthScreen
 import com.example.myapplicationnew.presentation.MainScreen.MainScreen
+import com.example.myapplicationnew.presentation.MapScreen.MapScreen
 import com.example.myapplicationnew.presentation.OnboardScreen.OnboardScreen
 import com.example.myapplicationnew.presentation.OrderScreen.OrderScreen
 import com.example.myapplicationnew.presentation.SplashScreen.SplashScreen
 import com.example.myapplicationnew.theme.ThemeType
 import com.example.myapplicationnew.theme.setContentWithTheme
 import com.example.myapplicationnew.themeColors
+import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 
-@Serializable
-data class Coff(
-    val name:String,
-    val price:String
-)
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MapKitFactory.initialize(this)
+        MapKitFactory.getInstance().onStart();
         setContentWithTheme(
         ) {
             val navController = rememberNavController()
@@ -60,6 +60,12 @@ class MainActivity : ComponentActivity() {
                 composable(Screen.OrderScreen.route) {
                     OrderScreen()
                 }
+
+                composable(Screen.MapScreen.route) {
+                    MapScreen()
+                }
+
+
             }
         }
     }
