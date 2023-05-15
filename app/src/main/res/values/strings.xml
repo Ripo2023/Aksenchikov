@@ -19,4 +19,6 @@
     <string name="code">Код</string>
     <string name="sing">Войти</string>
     <string name="Select">Выбрать</string>
+    <string name="pr">Список продуктов</string>
+    <string name="qr">QR</string>
 </resources>

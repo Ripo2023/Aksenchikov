@@ -6,6 +6,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.asDeferred
+import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -73,5 +74,25 @@ class ProductRepository @Inject constructor(
         return try {
             storageRef.downloadUrl.asDeferred().await().toString()
         }catch (e:Exception) { null }
+    }
+
+    suspend fun getName(id:String) : String? {
+        val ref = database.getReference("Coffee")
+
+        val idWithName = ref.get().await().children.map {
+            it.key as String to Json.decodeFromString(RemoteProductModel.serializer(),it.value as String).name
+        }
+
+        return idWithName.firstOrNull() { it.first == id }?.second
+    }
+
+    suspend fun getPrice(id:String) : String? {
+        val ref = database.getReference("Coffee")
+
+        val idWithPrice = ref.get().await().children.map {
+            it.key as String to Json.decodeFromString(RemoteProductModel.serializer(),it.value as String).price
+        }
+
+        return idWithPrice.firstOrNull() { it.first == id }?.second
     }
 }

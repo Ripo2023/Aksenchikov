@@ -54,7 +54,7 @@ class OrderRepository @Inject constructor(
         val orders = loadUserOrders()
 
         return orders.map {
-            OrderViewModel(it.id,productRepository.getProductImageUrl(it.productId),it.isReady)
+            OrderViewModel(it.id,productRepository.getProductImageUrl(it.productId),it.isReady,productRepository.getName(it.productId),it.volumeCof,it.productId)
         }.filter { it.isReady }
     }
 
@@ -62,7 +62,7 @@ class OrderRepository @Inject constructor(
         val orders = loadUserOrders()
 
         return orders.map {
-            OrderViewModel(it.id,productRepository.getProductImageUrl(it.productId),it.isReady)
+            OrderViewModel(it.id,productRepository.getProductImageUrl(it.productId),it.isReady,productRepository.getName(it.productId),it.volumeCof,it.productId)
         }.filter { !it.isReady }
     }
 }

@@ -271,7 +271,11 @@ fun TopBar(navController: NavController) {
             Modifier
                 .size(60.dp)
                 .padding(end = 10.dp)
-                .clickable { navController.navigate(Screen.OrderScreen.route) { launchSingleTop = true } }
+                .clickable {
+                    navController.navigate(Screen.OrderScreen.route) {
+                        launchSingleTop = true
+                    }
+                }
         )
 
         Column {
@@ -482,9 +486,8 @@ fun MakeOrderDialog(
                                             modifier = Modifier
                                                 .size(100.dp)
                                                 .padding(bottom = 10.dp),
-                                        ) {
-                                            CircularProgressIndicator()
-                                        }
+                                            loading = { CircularProgressIndicator() }
+                                        )
                                     } else {
                                         Icon(painter = painterResource(id = R.drawable.baseline_add_24),
                                             contentDescription = "",
@@ -502,7 +505,8 @@ fun MakeOrderDialog(
                                 mainScreenViewModel.makeOrder(product.id,currentSelectedVolume.first)
                             },
                             colors = ButtonDefaults.buttonColors(backgroundColor = themeColors.primary),
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .padding(top = 40.dp),
                             shape = RoundedCornerShape(20.dp)
                         ) {
