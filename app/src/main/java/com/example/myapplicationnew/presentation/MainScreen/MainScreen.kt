@@ -502,7 +502,7 @@ fun MakeOrderDialog(
 
                         Button(
                             onClick = {
-                                mainScreenViewModel.makeOrder(product.id,currentSelectedVolume.first)
+                                mainScreenViewModel.makeOrder(product.id,currentSelectedVolume.first,product.name)
                             },
                             colors = ButtonDefaults.buttonColors(backgroundColor = themeColors.primary),
                             modifier = Modifier

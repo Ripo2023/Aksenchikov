@@ -5,8 +5,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplicationnew.domain.CategoryRepository
+import com.example.myapplicationnew.domain.LastOrderInfoManager
 import com.example.myapplicationnew.domain.OrderRepository
 import com.example.myapplicationnew.domain.ProductRepository
+import com.example.myapplicationnew.domain.models.LastOrderModel
 import com.example.myapplicationnew.models.OrderModel
 import com.example.myapplicationnew.presentation.MainScreen.models.CategoryLoadState
 import com.example.myapplicationnew.presentation.MainScreen.models.MakeOrderDialogState
@@ -24,7 +26,8 @@ import javax.inject.Inject
 class MainScreenViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val productRepository: ProductRepository,
-    private val orderRepository: OrderRepository
+    private val orderRepository: OrderRepository,
+    private val lastOrderInfoManager: LastOrderInfoManager
 ) : ViewModel() {
 
 
@@ -71,12 +74,14 @@ class MainScreenViewModel @Inject constructor(
         }
     }
 
-    fun makeOrder(productId:String,volume:Float) {
+    fun makeOrder(productId:String,volume:Float,productName:String) {
         viewModelScope.launch(Dispatchers.IO) {
             orderRepository.makeOrder(
                 orderModel = OrderModel(productId = productId, volumeCof = volume)
             )
             hideMakeOrderDialogState()
+
+            lastOrderInfoManager.setLastOrder(LastOrderModel(productName,1))
         }
     }
 
