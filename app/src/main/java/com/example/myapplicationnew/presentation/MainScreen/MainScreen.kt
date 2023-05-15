@@ -59,6 +59,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.SubcomposeAsyncImage
 import com.example.myapplicationnew.R
@@ -66,12 +67,14 @@ import com.example.myapplicationnew.presentation.MainScreen.models.CategoryLoadS
 import com.example.myapplicationnew.presentation.MainScreen.models.MakeOrderDialogState
 import com.example.myapplicationnew.presentation.MainScreen.models.ProductListState
 import com.example.myapplicationnew.presentation.MainScreen.models.ProductModel
+import com.example.myapplicationnew.presentation.Screen
 import com.example.myapplicationnew.themeColors
 
 @OptIn(ExperimentalLayoutApi::class)
 @SuppressLint("ResourceType")
 @Composable
 fun MainScreen(
+    navController: NavController,
     mainScreenViewModel:MainScreenViewModel = hiltViewModel()
 ) {
 
@@ -101,7 +104,7 @@ fun MainScreen(
                 end = 15.dp
             ),
         backgroundColor = themeColors.background,
-        topBar = { TopBar() }
+        topBar = { TopBar(navController) }
     ) {
         LazyColumn(
            modifier = Modifier.padding(
@@ -260,7 +263,7 @@ fun MainScreen(
 }
 
 @Composable
-fun TopBar() {
+fun TopBar(navController: NavController) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         AsyncImage(
             model = R.drawable.logo,
@@ -268,6 +271,7 @@ fun TopBar() {
             Modifier
                 .size(60.dp)
                 .padding(end = 10.dp)
+                .clickable { navController.navigate(Screen.OrderScreen.route) { launchSingleTop = true } }
         )
 
         Column {

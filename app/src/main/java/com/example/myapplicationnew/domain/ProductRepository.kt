@@ -12,7 +12,9 @@ import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 
-class ProductRepository @Inject constructor() {
+class ProductRepository @Inject constructor(
+    private val categoryRepository: CategoryRepository
+) {
 
     private val database by lazy {
         Firebase.database
@@ -22,12 +24,13 @@ class ProductRepository @Inject constructor() {
         Firebase.storage
     }
 
+
+    @Serializable
+    data class RemoteProductModel(
+        val name:String,
+        val price:String
+    )
     suspend fun getCategoryProduct(categoryId:String) : List<ProductModel> {
-        @Serializable
-        data class RemoteProductModel(
-            val name:String,
-            val price:String
-        )
         val ref  = database.getReference(categoryId)
 
         val productList = ref.get().asDeferred().await().children.map {
@@ -62,5 +65,13 @@ class ProductRepository @Inject constructor() {
 
             it.copy(imageUri = storageRef.downloadUrl.asDeferred().await().toString())
         }
+    }
+
+    suspend fun getProductImageUrl(id:String) : String? {
+        val storageRef = storage.reference.child("Images/${id}.png")
+
+        return try {
+            storageRef.downloadUrl.asDeferred().await().toString()
+        }catch (e:Exception) { null }
     }
 }

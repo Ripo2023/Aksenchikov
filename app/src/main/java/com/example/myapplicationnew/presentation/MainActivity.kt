@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapplicationnew.presentation.AuthScreen.AuthScreen
 import com.example.myapplicationnew.presentation.MainScreen.MainScreen
 import com.example.myapplicationnew.presentation.OnboardScreen.OnboardScreen
+import com.example.myapplicationnew.presentation.OrderScreen.OrderScreen
 import com.example.myapplicationnew.presentation.SplashScreen.SplashScreen
 import com.example.myapplicationnew.theme.ThemeType
 import com.example.myapplicationnew.theme.setContentWithTheme
@@ -53,7 +54,11 @@ class MainActivity : ComponentActivity() {
                 }
 
                 composable(Screen.MainScreen.route) {
-                    MainScreen()
+                    MainScreen(navController)
+                }
+
+                composable(Screen.OrderScreen.route) {
+                    OrderScreen()
                 }
             }
         }
