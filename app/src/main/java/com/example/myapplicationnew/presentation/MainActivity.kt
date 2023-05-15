@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +13,7 @@ import com.example.myapplicationnew.presentation.AuthScreen.AuthScreen
 import com.example.myapplicationnew.presentation.MainScreen.MainScreen
 import com.example.myapplicationnew.presentation.OnboardScreen.OnboardScreen
 import com.example.myapplicationnew.presentation.SplashScreen.SplashScreen
+import com.example.myapplicationnew.theme.ThemeType
 import com.example.myapplicationnew.theme.setContentWithTheme
 import com.example.myapplicationnew.themeColors
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +31,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentWithTheme() {
+        setContentWithTheme(
+        ) {
             val navController = rememberNavController()
             NavHost(
                 navController = navController,

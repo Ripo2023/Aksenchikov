@@ -6,5 +6,6 @@ data class ThemeColors(
     val background: Color,
     val primary: Color,
     val primaryFontColor: Color,
-    val secondaryFontColor:Color
+    val secondaryFontColor: Color,
+    val label: Color
 )
