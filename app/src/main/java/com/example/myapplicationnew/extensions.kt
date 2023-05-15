@@ -10,3 +10,13 @@ val themeColors : ThemeColors
 
 val themeGradients : Gradient
     @Composable get() = LocalTheme.current.gradient
+
+
+val italianNameByProductId : Map<String,String>
+    get() = mapOf(
+        "0" to "latte",
+        "1" to "kapychino",
+        "2" to "ecspresso",
+        "3" to "raff",
+
+    )

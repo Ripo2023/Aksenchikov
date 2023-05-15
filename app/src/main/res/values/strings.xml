@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Coffee App</string>
     <string name="Skip">Пропустить</string>
     <string name="Hi">Привет!</string>
     <string name="first">Переходи в этом приложении ты сможешь заказать кофе онлайн и выбрать магазин не далеко от себя. Давай начнём работу</string>

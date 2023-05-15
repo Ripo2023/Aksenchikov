@@ -1,6 +1,8 @@
 package com.example.myapplicationnew.presentation.MainScreen
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +11,7 @@ import com.example.myapplicationnew.domain.LastOrderInfoManager
 import com.example.myapplicationnew.domain.OrderRepository
 import com.example.myapplicationnew.domain.ProductRepository
 import com.example.myapplicationnew.domain.models.LastOrderModel
+import com.example.myapplicationnew.italianNameByProductId
 import com.example.myapplicationnew.models.OrderModel
 import com.example.myapplicationnew.presentation.MainScreen.models.CategoryLoadState
 import com.example.myapplicationnew.presentation.MainScreen.models.MakeOrderDialogState
@@ -16,10 +19,12 @@ import com.example.myapplicationnew.presentation.MainScreen.models.ProductListSt
 import com.example.myapplicationnew.presentation.MainScreen.models.ProductModel
 import com.example.myapplicationnew.presentation.MainScreen.models.SubModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +32,8 @@ class MainScreenViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val productRepository: ProductRepository,
     private val orderRepository: OrderRepository,
-    private val lastOrderInfoManager: LastOrderInfoManager
+    private val lastOrderInfoManager: LastOrderInfoManager,
+    @ApplicationContext private val context:Context
 ) : ViewModel() {
 
 
@@ -82,7 +88,21 @@ class MainScreenViewModel @Inject constructor(
             hideMakeOrderDialogState()
 
             lastOrderInfoManager.setLastOrder(LastOrderModel(productName,1))
+
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Товар добавлен", Toast.LENGTH_SHORT).show()
+            }
         }
+    }
+
+    fun showInfo(productId: String) {
+
+        val originalName = italianNameByProductId[productId]
+        Toast.makeText(context, buildString {
+            append("Разработчик:Аксёнчиков А.В\n")
+            if(originalName != null) append("Оригинальное название:$originalName")
+        },
+            Toast.LENGTH_SHORT).show()
     }
 
 

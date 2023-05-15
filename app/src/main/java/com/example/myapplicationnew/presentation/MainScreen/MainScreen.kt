@@ -362,7 +362,7 @@ fun MakeOrderDialog(
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
                         Icon(painter = painterResource(id = R.drawable.baseline_info_24),
                             contentDescription = "",
-                            modifier = Modifier.size(40.dp),
+                            modifier = Modifier.size(40.dp).clickable { mainScreenViewModel.showInfo(product.id) },
                             tint = Color.Gray
                         )
                     }
@@ -473,10 +473,6 @@ fun MakeOrderDialog(
                                                 mainScreenViewModel.selectedSubs.add(it.id)
                                             }
                                         }
-                                        .border(
-                                            width = if (isSelected) 5.dp else 0.dp,
-                                            color = themeColors.primary
-                                        )
                                 ) {
 
                                     if(isSelected) {
