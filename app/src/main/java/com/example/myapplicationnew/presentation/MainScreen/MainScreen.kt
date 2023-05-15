@@ -2,6 +2,8 @@ package com.example.myapplicationnew.presentation.MainScreen
 
 import android.annotation.SuppressLint
 import androidx.annotation.IdRes
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,9 +26,13 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.W900
 import androidx.compose.ui.unit.dp
@@ -124,6 +131,17 @@ fun MainScreen(
                                 .padding(top = 10.dp)
                         ) {
                             items((categoryLoadState as CategoryLoadState.Loaded).categoryList) {
+                                val isSelected = (categoryLoadState as CategoryLoadState.Loaded).selected == it.id
+
+                                val color = animateColorAsState(
+                                    targetValue = if(isSelected) Color.Black else Color.White,
+                                    animationSpec = tween(1000)
+                                )
+
+                                val textColor = animateColorAsState(
+                                    targetValue = if(isSelected) Color.White else Color.Gray,
+                                    animationSpec = tween(1000)
+                                )
                                 Card(
                                     modifier = Modifier
                                         .width(100.dp)
@@ -131,7 +149,7 @@ fun MainScreen(
                                         .padding(end = 10.dp,)
                                         .clickable { mainScreenViewModel.loadCategoryItems(it.id) },
                                     shape = RoundedCornerShape(10.dp),
-                                    backgroundColor = Color.Black
+                                    backgroundColor = color.value
                                 ) {
                                     Row(
                                         modifier = Modifier
@@ -142,7 +160,7 @@ fun MainScreen(
                                     ) {
                                         Text(
                                             text = it.name,
-                                            color = Color.White,
+                                            color = textColor.value,
                                             fontWeight = W900,
                                             fontSize = 16.sp
                                         )
@@ -164,21 +182,47 @@ fun MainScreen(
                 }
                 is ProductListState.ShowProduct -> {
                     item {
-                        FlowRow(maxItemsInEachRow = 2,modifier = Modifier.fillMaxWidth()) {
+                        FlowRow(
+                            maxItemsInEachRow = 2,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp),
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             (productListState as ProductListState.ShowProduct).list.forEach {
                                 Card(
-                                    modifier = Modifier.fillMaxWidth(0.5f),
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.5f)
+                                        .padding(10.dp),
                                     shape = RoundedCornerShape(20.dp),
                                     backgroundColor = Color.White
                                 ) {
-                                    Column() {
+                                    Column(
+                                        Modifier.fillMaxSize(),
+                                        verticalArrangement = Arrangement.Center,
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
                                         SubcomposeAsyncImage(
                                             model = it.imageUrl,
                                             contentDescription = "",
-                                            modifier = Modifier.size(70.dp)
+                                            modifier = Modifier.size(70.dp),
+                                            loading = {
+                                                CircularProgressIndicator()
+                                            }
                                         )
 
                                         Text(text = it.name)
+                                        Text(text = "От ${it.price}")
+
+                                        OutlinedButton(
+                                            onClick = { /*TODO*/ },
+                                            colors = ButtonDefaults.outlinedButtonColors(
+                                                contentColor = themeColors.primary
+                                            )
+                                        ) {
+                                            Text(text = stringResource(R.string.Select))
+                                        }
                                     }
                                 }
                             }

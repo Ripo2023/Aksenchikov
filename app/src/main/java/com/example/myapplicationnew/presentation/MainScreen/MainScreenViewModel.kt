@@ -27,6 +27,10 @@ class MainScreenViewModel @Inject constructor(
 
     fun loadCategoryItems(categoryId:String) {
         viewModelScope.launch(Dispatchers.IO) {
+            categoryState.update { if(it is CategoryLoadState.Loaded) {
+                it.copy(selected = categoryId)
+            } else it
+            }
             productListState.update { ProductListState.Loading }
             productListState.update {
 
@@ -45,7 +49,7 @@ class MainScreenViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val categoryList = categoryRepository.getCategory()
-                categoryState.update { CategoryLoadState.Loaded(categoryList) }
+                categoryState.update { CategoryLoadState.Loaded(categoryList,categoryList[0].name) }
 
                 loadCategoryItems(categoryList[0].id)
             }catch (e:Exception) {

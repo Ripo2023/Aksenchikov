@@ -6,7 +6,7 @@ sealed class CategoryLoadState {
 
     object Loading : CategoryLoadState()
 
-    data class Loaded(val categoryList: List<CategoryProduct>) : CategoryLoadState()
+    data class Loaded(val categoryList: List<CategoryProduct>,val selected:String) : CategoryLoadState()
 
     object Error : CategoryLoadState()
 }
